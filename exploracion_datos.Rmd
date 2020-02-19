@@ -1,0 +1,147 @@
+---
+title: "dataset_mujeres"
+author: "Azalea"
+date: "2/18/2020"
+output: html_document
+---
+
+Lo primero, cargamos libreria(s)
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+
+Ahora importamos los datos.
+```{r}
+capitulos_rladies <- readr::read_csv("https://raw.githubusercontent.com/cienciadedatos/datos-de-miercoles/master/datos/2019/2019-06-26/capitulos_rladies.csv")
+eventos_rladies <- readr::read_csv("https://raw.githubusercontent.com/cienciadedatos/datos-de-miercoles/master/datos/2019/2019-06-26/eventos_rladies.csv")
+```
+
+Una vez que se hayan leído los datos, lo que sigue es explorarlos.
+Vamos a revisar las variables vs observaciones del primer dataset: R-Ladies
+
+```{r}
+names(capitulos_rladies)
+str(capitulos_rladies)
+
+names(eventos_rladies)
+str(eventos_rladies)
+```
+
+Quiero saber cuáles son los capítulos de MX
+```{r}
+capitulos_rladies %>% 
+  filter(pais == "MX")
+```
+
+```{r}
+eventos_rladies %>% 
+  filter(capitulo == "R-Ladies Queretaro")
+
+eventos_rladies %>% 
+  filter(capitulo == "R-Ladies CDMX")
+
+eventos_rladies %>% 
+  filter(capitulo == "R-Ladies Xalapa")
+```
+
+```{r}
+eventos_rladies %>% 
+  filter(capitulo == "R-Ladies San Francisco")
+```
+
+
+Segundo dataset: 
+
+```{r}
+jobs_gender <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-05/jobs_gender.csv")
+earnings_female <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-05/earnings_female.csv") 
+employed_gender <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-05/employed_gender.csv") 
+```
+
+```{r}
+names(jobs_gender)
+
+summary(jobs_gender$total_earnings)
+summary(jobs_gender$total_earnings_male)
+summary(jobs_gender$total_earnings_female)
+```
+
+```{r}
+unique(jobs_gender$occupation)
+unique(jobs_gender$major_category)
+unique(jobs_gender$minor_category)
+ 
+ggplot(jobs_gender, aes(workers_male, workers_female, color = major_category)) + 
+  	geom_point(alpha = 0.5)
+```
+
+```{r}
+jobs_gender$major_category <- as.factor(jobs_gender$major_category)
+```
+
+```{r}
+w_female <- ggplot(jobs_gender, aes(x = 1, y = workers_female, fill = major_category)) +
+	# Use a column geometry.
+	geom_col() +
+	# Change coordinate system to polar and set theta to 'y'.
+	coord_polar(theta = 'y')
+
+w_male <- ggplot(jobs_gender, aes(x = 1, y = workers_male, fill = major_category)) +
+	# Use a column geometry.
+	geom_col() +
+	# Change coordinate system to polar and set theta to 'y'.
+	coord_polar(theta = 'y')
+```
+
+```{r}
+library(patchwork)
+w_female + w_male
+```
+
+```{r}
+bw_female <- ggplot(jobs_gender, aes(major_category, workers_female, fill = major_category)) +
+  geom_bar(stat="identity")
+
+bw_male <- ggplot(jobs_gender, aes(major_category, workers_male, fill = major_category)) +
+  geom_bar(stat="identity")
+
+bw_female + bw_male
+```
+
+The percent of females for specific occupation
+```{r}
+ggplot(jobs_gender, aes(major_category, percent_female, fill = major_category)) +
+  geom_boxplot()
+
+ggplot(jobs_gender, aes(major_category, percent_female, fill = major_category)) +
+  geom_bar(stat="identity")
+```
+
+
+```{r}
+ggplot(jobs_gender, aes(major_category, percent_female, fill = major_category)) +
+  geom_boxplot()
+```
+
+```{r}
+ggplot(jobs_gender, aes(major_category, total_earnings, fill = major_category)) +
+  geom_boxplot()
+
+ggplot(jobs_gender, aes(major_category, total_earnings_female, fill = major_category)) +
+  geom_boxplot()
+
+ggplot(jobs_gender, aes(major_category, total_earnings_male, fill = major_category)) +
+  geom_boxplot()
+```
+
+
+
+```{r}
+
+names(earnings_female)
+earnings_female$percent
+
+names(employed_gender)
+```
+
