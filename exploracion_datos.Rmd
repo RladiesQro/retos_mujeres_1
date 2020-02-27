@@ -23,7 +23,6 @@ Vamos a revisar las variables vs observaciones del primer dataset: R-Ladies
 ```{r}
 names(capitulos_rladies)
 str(capitulos_rladies)
-
 names(eventos_rladies)
 str(eventos_rladies)
 ```
@@ -34,6 +33,46 @@ capitulos_rladies %>%
   filter(pais == "MX")
 ```
 
+Cuáles son los capítulos con más miembros?
+```{r}
+capitulos_rladies %>%
+  arrange(desc(miembros))
+```
+
+Cuáles son los capítulos con más de mil miembros?
+```{r}
+capitulos_rladies %>%
+  arrange(desc(miembros)) %>% 
+  filter(miembros > 1000)
+```
+
+Capitulo con más de 500 miebros, pero menos de mil.
+```{r}
+capitulos_rladies %>%
+    arrange(desc(miembros)) %>% 
+    filter(between(miembros, 500, 1000))
+```
+
+La cantidad de miembros está relacionado con la fecha de creación del capítulo?
+```{r}
+capitulos_rladies %>%
+    arrange(creacion)
+```
+
+
+Los capítulos de MX
+```{r}
+capitulos_rladies %>%
+  filter(pais == "MX") %>% 
+  arrange(miembros)
+
+capitulos_rladies %>%
+  filter(pais == "MX") %>% 
+  arrange(desc(miembros))
+```
+
+
+Vamos a explorar LOS EVENTOS de los Capítulos de MX, ahora con `eventos_rladies`:
 ```{r}
 eventos_rladies %>% 
   filter(capitulo == "R-Ladies Queretaro")
@@ -45,20 +84,27 @@ eventos_rladies %>%
   filter(capitulo == "R-Ladies Xalapa")
 ```
 
+
 ```{r}
 eventos_rladies %>% 
   filter(capitulo == "R-Ladies San Francisco")
 ```
 
 
-Segundo dataset: 
+## GENERA UNA PREGUNTA QUE TE GUSTARÍA CONTESTAR CON LAS BASES DE DATOS DE R-LADIES
 
+
+
+# Ahora con el otro set de datos:
+
+Otra vez, comenzamos por cargar la base de datos que se componen de tres conjuntos de datos (dataset):
 ```{r}
 jobs_gender <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-05/jobs_gender.csv")
 earnings_female <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-05/earnings_female.csv") 
 employed_gender <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-03-05/employed_gender.csv") 
 ```
 
+Vamos a explorar los datos
 ```{r}
 names(jobs_gender)
 
@@ -67,19 +113,22 @@ summary(jobs_gender$total_earnings_male)
 summary(jobs_gender$total_earnings_female)
 ```
 
+Ahora vamos a ver qué tipo de trabajo o profesiones hay en la base de datos
 ```{r}
 unique(jobs_gender$occupation)
 unique(jobs_gender$major_category)
 unique(jobs_gender$minor_category)
  
-ggplot(jobs_gender, aes(workers_male, workers_female, color = major_category)) + 
-  	geom_point(alpha = 0.5)
+#ggplot(jobs_gender, aes(workers_male, workers_female, color = major_category)) + 
+#  	geom_point(alpha = 0.5)
 ```
 
+Nos quedamos con __major_category__ como factor.
 ```{r}
 jobs_gender$major_category <- as.factor(jobs_gender$major_category)
 ```
 
+Graficamos la proporción de mujeres (female) para cada categoría y después lo mismo para los hombres (male)
 ```{r}
 w_female <- ggplot(jobs_gender, aes(x = 1, y = workers_female, fill = major_category)) +
 	# Use a column geometry.
@@ -94,36 +143,36 @@ w_male <- ggplot(jobs_gender, aes(x = 1, y = workers_male, fill = major_category
 	coord_polar(theta = 'y')
 ```
 
+Juntamos las dos graficas para poder compararlas
 ```{r}
 library(patchwork)
 w_female + w_male
 ```
 
+
+Ahora vamos a explorar cuántos trabajadores de cada sexo se desempeñan en cada __major_category__ por año de la encuesta.
 ```{r}
-bw_female <- ggplot(jobs_gender, aes(major_category, workers_female, fill = major_category)) +
-  geom_bar(stat="identity")
+library(cowplot)
 
-bw_male <- ggplot(jobs_gender, aes(major_category, workers_male, fill = major_category)) +
-  geom_bar(stat="identity")
+bw_female <- ggplot(jobs_gender, aes(year, workers_female, fill = major_category)) +
+  geom_bar(stat="identity") + 
+  ylim(0, 60000000)
 
-bw_female + bw_male
+bw_male <- ggplot(jobs_gender, aes(year, workers_male, fill = major_category)) +
+  geom_bar(stat="identity") +
+  ylim(0, 60000000)
+
+plot_grid(bw_female, bw_male, labels = "AUTO")
 ```
 
-The percent of females for specific occupation
-```{r}
-ggplot(jobs_gender, aes(major_category, percent_female, fill = major_category)) +
-  geom_boxplot()
-
-ggplot(jobs_gender, aes(major_category, percent_female, fill = major_category)) +
-  geom_bar(stat="identity")
-```
-
-
+EL porcentaje de mujeres para cada __major category__
 ```{r}
 ggplot(jobs_gender, aes(major_category, percent_female, fill = major_category)) +
   geom_boxplot()
 ```
 
+Revisemos rápido las ganancias de acuerdo a mujeres y hombres
+*Mejora estas gráficas para poder comparar las ganancias de las mujeres vs hombres* 
 ```{r}
 ggplot(jobs_gender, aes(major_category, total_earnings, fill = major_category)) +
   geom_boxplot()
@@ -136,12 +185,8 @@ ggplot(jobs_gender, aes(major_category, total_earnings_male, fill = major_catego
 ```
 
 
-
+También están los datos `earnings_female` y `employed_gender`
 ```{r}
-
-names(earnings_female)
-earnings_female$percent
-
-names(employed_gender)
+# vamos explorarlos ...
 ```
 
