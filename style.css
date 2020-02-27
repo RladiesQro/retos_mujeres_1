@@ -1,0 +1,72 @@
+.text {
+    color: black;
+    font-size: 25px;
+    font-family: "Times New Roman";
+    background: #a3f0d7;
+    text-align:center;
+    width:100%;
+}
+
+
+
+.liga {
+    color: #041ec7;
+    font-size: 25px;
+    font-style: italic;
+    background:#ffe9e6 ;
+    width:100%;
+    font-size: 16px;
+}
+
+.liga2 {
+    color: #041ec7;
+    font-size: 25px;
+    font-style: italic;
+    background:#ffe9e6 ;
+    width:100%;
+    font-size: 33px;
+}
+
+.gdbar img {
+  width: 300px !important;
+  height: 300px !important;
+  margin: 8px 8px;
+}
+
+.gdbar {
+  width: 400px !important;
+  height: 400px !important;
+}
+
+slides > slide:not(.nobackground):before {
+  width: 70px;
+  height: 70px;
+  background-size: 70px 70px;
+}
+
+pre {
+  width: 100%; /* 106%; */
+  left: 0; /* -60px; */
+  padding: 10px 15px 10px 15px; /* 10px 0 10px 60px; */
+}
+
+.code {
+    color: black;
+    font-size: 25px;
+    font-family: "Courier New";
+    background: #e6f8ff;
+    width:100%;
+}
+
+
+
+/* Rounded Corner */
+.tb {
+	border:2px solid #456879;
+	border-radius:10px;
+}
+
+
+
+
+
