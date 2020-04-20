@@ -5,7 +5,7 @@ R_Retos con base de datos de mujeres quienes trabajan con datos. Es esta reunió
 
 - La primera base de datos es de los eventos de RLadies que se han trabajado en datos-de-miercoles. Estos datos fueron extraídos de la plataforma Meetup; el primer dataset contiene la información de cada grupo o "capítulo" y el segundo, los datos de todos los eventos que han organizado a la fecha (26/06/2019). https://github.com/cienciadedatos/datos-de-miercoles/blob/master/datos/2019/2019-06-26/README.md
 
-### Para acceder a este dataset
+### Para acceder a este dataset sigue los siguientes pasos:
 ```
 # install_packages("readr")
 capitulos_rladies <- readr::read_csv("https://raw.githubusercontent.com/cienciadedatos/datos-de-miercoles/master/datos/2019/2019-06-26/capitulos_rladies.csv")
